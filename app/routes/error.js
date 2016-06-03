@@ -13,9 +13,9 @@ module.exports = function (app) {
     });
     // 404 handler
     app.use((req, res) => {
-        res.status(400).render(tmpl, {
+        res.status(404).render(tmpl, {
             error: {
-                statusCode: 400,
+                statusCode: 404,
                 message: 'not found'
             }
         });

@@ -1,7 +1,18 @@
 {% extends "views/_base/_base.html" %}
 {% block content %}
-<h1>You are on de account scherm</h1>
-<p>
-    TODO: display relevant account data
-</p>
+<h1>Hallo {{ user.first_name }}</h1>
+<form action="/expenses" method="get">
+    <fieldset>
+        <legend>kies data</legend>
+        <label>
+            start:
+            <input type="date" name="from" value="2015-12-01">
+        </label>
+        <label>
+            end:
+            <input type="date" name="to" value="2016-06-01">
+        </label>
+        <button>kijk maar ff</button>
+    </fieldset>
+</form>
 {% endblock %}

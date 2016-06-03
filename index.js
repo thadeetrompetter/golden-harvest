@@ -19,6 +19,9 @@ const whoami = `${config.baseUri}${config.whoami}`;
 // TODO: replace with proper database
 const users = new Users();
 
+// route config
+config.users = users;
+
 app.use(require('cookie-parser')())
 app.use(require('body-parser').urlencoded({
     extended: true
@@ -36,12 +39,16 @@ passport.use(new LocalStrategy({
     harvest.query(auth, whoami).then(function (response) {
         let userData = JSON.parse(response);
         return users.setUser(userData.user.id, {
-            credentials: auth
+            credentials: auth,
+            data: userData
         }).then(() => {
             done(null, userData.user.id);
         });
     }).catch(err => {
-        done(err)
+        // this indicates an authentication error
+        // TODO: make error
+        console.error('user authenticantion error', err);
+        done(null, false)
     });
 }));
 
@@ -62,11 +69,12 @@ nunjucks.configure('source', {
 });
 
 // load routes
-const route = require('./lib/load-route')(app, passport);
+const route = require('./lib/load-route')(app, passport, config);
 
 route('./app/routes/index');
 route('./app/routes/login');
 route('./app/routes/account');
+route('./app/routes/expenses');
 route('./app/routes/error');
 
 app.listen(3000);

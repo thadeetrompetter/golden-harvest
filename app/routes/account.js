@@ -5,10 +5,10 @@ const UnauthorizedError = require('../../lib/errors').UnauthorizedError;
 
 module.exports = function (app) {
     app.get('/account',
-    (req, res, next) => {
+    (req, res) => {
         if(!req.user){
             throw new UnauthorizedError('you cannot be here')
         }
-        res.render(tmpl);
+        res.render(tmpl, req.user.data);
     });
 };
