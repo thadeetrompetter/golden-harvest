@@ -6,7 +6,7 @@ module.exports = function (app) {
 
     // all errors
     app.use((err, req, res, next) => {
-        var status = err.statusCode;
+        var status = err.statusCode || 500;
         res.status(status).render(tmpl, {
             error: err
         });
