@@ -1,8 +1,6 @@
 'use strict';
 const query = require('../../lib/harvest').query;
-const errors = require('../../lib/errors');
-const UnauthorizedError = errors.UnauthorizedError;
-const BadRequestError = errors.BadRequestError;
+const BadRequestError = require('../../lib/errors').BadRequestError;
 const url = require('url');
 const ensureAuth = require('../../lib/ensure-authenticated');
 
@@ -16,7 +14,7 @@ module.exports = function (app, passport, config) {
         const toDate = req.params.to || req.query.to;
 
         if(!fromDate || !toDate){
-            throw new BadRequestError('missing start and/or end date');
+            return next(new BadRequestError('missing start and/or end date'));
         }
 
         //TODO: extract into helper module
