@@ -4,14 +4,13 @@ const errors = require('../../lib/errors');
 const UnauthorizedError = errors.UnauthorizedError;
 const BadRequestError = errors.BadRequestError;
 const url = require('url');
+const ensureAuth = require('../../lib/ensure-authenticated');
 
 module.exports = function (app, passport, config) {
     const users = config.users;
-    app.get('/expenses/:from?/:to?', (req, res) => {
-        // TODO: create ensure authenticated middleware.
-        if(!req.user){
-            throw new UnauthorizedError('you cannot be here');
-        }
+    app.get('/expenses/:from?/:to?',
+    ensureAuth,
+    (req, res, next) => {
         const id = req.user.data.user.id;
         const fromDate = req.params.from || req.query.from;
         const toDate = req.params.to || req.query.to;
